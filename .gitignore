@@ -1,11 +1,11 @@
 # Ignore
 fish_variables
+completions/*
 conf.d
 
 !functions/
 functions/*
 # Do not ignore
 !functions/fish_right_prompt.fish
-!functions/fisher.fish
 
 !.gitignore
