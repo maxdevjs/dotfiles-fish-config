@@ -1,0 +1,12 @@
+#!/usr/bin/env fish
+ 
+curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher && fisher update jorgebucaran/fisher
+
+cp -Rf fish_plugins_ORIG fish_plugins
+
+fisher update
+
+test -d ~/.local/share/yadm/repo.git/modules/.config/fish/hooks \
+  && echo "Directory ~/.local/share/yadm/repo.git/modules/.config/fish/hooks exists." \
+  && cp -Rf ./setup/pre-commit ~/.local/share/yadm/repo.git/modules/.config/fish/hooks/pre-commit \
+  && echo "pre-commit copied to ~/.local/share/yadm/repo.git/modules/.config/fish/hooks"

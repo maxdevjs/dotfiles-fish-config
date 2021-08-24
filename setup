@@ -1,7 +1,0 @@
-#!/usr/bin/env fish
- 
-curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher && fisher update jorgebucaran/fisher
-
-cp -Rf fish_plugins_ORIG fish_plugins
-
-fisher update
