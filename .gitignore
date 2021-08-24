@@ -1,3 +1,9 @@
+# Ignore
 fish_variables
-functions
+
+!functions/
+functions/*
+# Do not ignore
 !functions/fish_right_prompt.fish
+
+!.gitignore
