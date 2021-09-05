@@ -57,12 +57,12 @@ set fish_cursor_visual      block
 
 # nvim 🦾
 if type -q nvim
-  set -gx EDITOR nvim
+  set -gx EDITOR 'nvim -u NONE'
   set -gx VISUAL nvim
   set -gx MANPAGER "nvim +Man! -c ':set signcolumn='"
   
   alias n='nvim '
-  alias nl='nvim -u ~/.config/nvimlua/init.lua '
+#   alias nl='nvim -u ~/.config/nvimlua/init.lua '
   alias vimdiff="nvim -d"
   alias ncf="nvim $XDG_CONFIG_HOME/fish/config.fish"
   alias ncn="nvim $XDG_CONFIG_HOME/nvim/init.vim"
