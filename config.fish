@@ -41,7 +41,8 @@ abbr -a yd 'youtube-dl ""'
 alias ks="$XDG_CONFIG_HOME/kitty/sessions/kitty-startup"
 
 if type -q n exa
-  alias la="exa -la"
+  #alias la="exa -la"
+  alias la="exa -l -g --icons"
   alias lg="exa --git -l"
   alias lt="exa --tree -D -L 3"
 end
@@ -55,18 +56,53 @@ set fish_cursor_insert      line       blink
 set fish_cursor_replace_one underscore blink
 set fish_cursor_visual      block
 
+# Reset padding/margin to 0 when opening nvim
+# TODO: search for fish hook to use in all applications
+alias kmp0='kitty @ set-spacing padding=0 margin=0'
+# Reset padding/margin to config values when closing nvim
+# TODO: store/retrieve from...?
+alias kmpV='kitty @ set-spacing padding=20 margin=10'
+#vim.api.nvim_command([[ autocmd VimLeave * :silent !kitty @ set-spacing padding=20 margin=10 ]])
+
+# function preexec_test --on-event fish_preexec
+#   echo preexec handler: $argv
+#   if set -q CMD_DURATION
+#   sleep 2s;
+#     kitty @ set-spacing padding=0 margin=0
+#   end
+#   
+# end
+# 
+# function postexec_test --on-event fish_postexec
+#   echo postexec handler: $argv
+#   kitty @ set-spacing padding=20 margin=10
+# end
+
+# if test -q fish_prompt
+# 	kitty @ set-spacing padding=120 margin=110
+# else
+# kitty @ set-spacing padding=0 margin=0
+# end
+
+# bat
+if type -q bat
+  alias cat=bat
+end
+
 # nvim 🦾
 if type -q nvim
   set -gx EDITOR 'nvim -u NONE'
   set -gx VISUAL nvim
   set -gx MANPAGER "nvim +Man! -c ':set signcolumn='"
   
+#   alias n='kmp0 && nvim '
   alias n='nvim '
 #   alias nl='nvim -u ~/.config/nvimlua/init.lua '
-  alias vimdiff="nvim -d"
-  alias ncf="nvim $XDG_CONFIG_HOME/fish/config.fish"
-  alias ncn="nvim $XDG_CONFIG_HOME/nvim/init.vim"
-  alias ncx="nvim $HOME/System/nixos-config/"
+  alias vimdiff="n -d"
+  # FIX: $XDG_CONFIG_HOME
+  alias ncf="n $XDG_CONFIG_HOME/fish/config.fish"
+  alias ncn="n $XDG_CONFIG_HOME/nvim/init.lua"
+  alias ncx="n $HOME/System/nixos-config/"
 end
 
 set -gx FZF_DEFAULT_COMMAND "rg --files --hidden --follow -g \"!.git/\" 2> /dev/null"
@@ -80,7 +116,7 @@ set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 # https://fishshell.com/docs/current/tutorial.html#path
 # https://fishshell.com/docs/current/tutorial.html#path-example
 # https://fishshell.com/docs/current/cmds/fish_add_path.html
-set -x PATH $HOME/System/dotfiles/bin $HOME/.local/bin $HOME/Dev/.node_modules/bin $PATH
+set -x PATH $HOME/.guix-profile/bin $HOME/.local/bin $PATH
 
 # https://github.com/Olical/dotfiles/blob/master/stowed/.config/fish/config.fish
 if type -q direnv
@@ -98,3 +134,29 @@ end
 # source $XDG_CONFIG_HOME/fish/themes/fish_tokyonight_storm.fish
 
 # TODO: port https://github.com/mvllow/dots/blob/main/guides/update-kitty-config-from-neovim.md
+
+
+
+
+
+
+#set DISTRO (lsb_release -a) > /dev/null 2>&1;
+
+#if string match -r 'Solus' $DISTRO
+#  echo sooooolus
+#end
+
+# Guix
+# Temporary workaround to access binaries
+# until I do not get it (refer to `how to use guix in fish shell` search)
+#set -x GUIX_PROFILE /home/maxdevjs/.guix-profile/bin
+#set -x PATH $HOME/Me/system/bin $HOME/.local/bin $HOME/Dev/.node_modules/bin $GUIX_PROFILE $PATH
+#source $GUIX_PROFILE/etc/profile
+
+# Nix
+#set NIX_LINK $HOME/.nix-profile # 🤔
+# https://github.com/lilyball/nix-env.fish
+
+# error: experimental Nix feature 'nix-command' is disabled; use '--extra-experimental-features nix-command' to override
+alias nix='nix --extra-experimental-features nix-command --extra-experimental-features flakes '
+
