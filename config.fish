@@ -108,6 +108,8 @@ end
 set -gx FZF_DEFAULT_COMMAND "rg --files --hidden --follow -g \"!.git/\" 2> /dev/null"
 set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 
+set -gx XDG_CONFIG_HOME "$HOME/.config"
+
 # https://github.com/haslersn/any-nix-shell
 #any-nix-shell fish --info-right | source
 
@@ -117,6 +119,20 @@ set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 # https://fishshell.com/docs/current/tutorial.html#path-example
 # https://fishshell.com/docs/current/cmds/fish_add_path.html
 set -x PATH $HOME/.guix-profile/bin $HOME/.local/bin $PATH
+
+# https://github.com/jarun/nnn/tree/master/plugins#configuration
+#"NNN_FIFO=/tmp/nnn.fifo NNN_PLUG='p:preview-tui' nnn "
+set -gx NNN_FIFO /tmp/nnn.fifo
+
+# https://github.com/jarun/nnn/tree/master/plugins#skip-user-confirmation-after-command-execution-
+# https://github.com/jarun/nnn/tree/master/plugins#page-non-interactive-command-output-
+set NNN_PLUG_COM 't:-!|tree -ps;l:-!|ls -lah --group-directories-first'
+set -gx NNN_COLORS '1234' '#0a1b2c3d''#0a1b2c3d;1234'
+set NNN_PLUG_DEV 'g:-!git diff*;l:-!git log*;o:!dev-git-open-repo-in-browser*'
+set NNN_PLUG_MEDIA 'm:-!|mediainfo $nnn;w:!&mpv $nnn*'
+set NNN_PLUG_NNN 'p:preview-tui;u:nmount'
+set -gx NNN_PLUG "$NNN_PLUG_DEV;$NNN_PLUG_MEDIA;$NNN_PLUG_NNN"
+alias nnn="nnn -i -o -U" 
 
 # https://github.com/Olical/dotfiles/blob/master/stowed/.config/fish/config.fish
 if type -q direnv
