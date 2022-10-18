@@ -19,7 +19,10 @@ echo "--- Installing fisher plugins"
 echo
 fisher update
 
-# Copying hooks
-  cp -Rf ~/.config/fish/setup/pre-commit ~/.config/fish/.git/hooks/pre-commit \
-  && echo "--- pre-commit copied to ~/.config/fish/.git/hooks" \
+# Copying hooks 
+test -d ~/.local/share/yadm/repo.git/modules/.config/fish/hooks \
+  && echo \
+  && echo "--- Directory ~/.local/share/yadm/repo.git/modules/.config/fish/hooks exists." \
+  && cp -Rf ~/.config/fish/setup/pre-commit ~/.local/share/yadm/repo.git/modules/.config/fish/hooks/pre-commit \
+  && echo "--- pre-commit copied to ~/.local/share/yadm/repo.git/modules/.config/fish/hooks" \
   && echo
