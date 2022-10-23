@@ -5,6 +5,10 @@ function fish_right_prompt_loading_indicator
     echo (set_color '#aaa')' … '(set_color normal)
 end
 
+# universal variable are stored in $HOME/.config/fish/fish_variables
+#set --universal nvm_default_packages yarn np
+#set --universal nvm_default_version v18.9.0
+
 # set pure_enable_git false
 
 # https://github.com/cirruslabs/docker-images-flutter/
