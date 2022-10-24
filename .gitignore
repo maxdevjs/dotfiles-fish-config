@@ -1,7 +1,10 @@
 # Ignore
 fish_variables
 completions/*
-conf.d
+
+!conf.d/
+conf.d/*
+!conf.d/xdg.fish
 
 !functions/
 functions/*

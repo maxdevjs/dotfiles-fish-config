@@ -97,16 +97,17 @@ end
 if type -q nvim
   set -gx EDITOR 'nvim -u NONE'
   set -gx VISUAL nvim
-  set -gx MANPAGER "nvim +Man! -c ':set signcolumn='"
+  set -gx MANPAGER "nvim +Man!"
   
-#   alias n='kmp0 && nvim '
-  alias n='nvim '
-#   alias nl='nvim -u ~/.config/nvimlua/init.lua '
+  # Padding 0
+  alias n='kmp0 && nvim '
+  #alias n='nvim '
+  #alias nl='nvim -u ~/.config/nvim/init.lua '
   alias vimdiff="n -d"
-  # FIX: $XDG_CONFIG_HOME
+  # FIX: $XDG_CONFIG_HOME # https://www.reddit.com/r/fishshell/comments/r1r3cn/comment/hm1jqsk/
   alias ncf="n $XDG_CONFIG_HOME/fish/config.fish"
-  alias ncn="n $XDG_CONFIG_HOME/nvim/init.lua"
-  alias ncx="n $HOME/System/nixos-config/"
+  #alias ncn="n $XDG_CONFIG_HOME/nvim/init.lua"
+  #alias ncx="n $HOME/System/nixos-config/"
 end
 
 set -gx FZF_DEFAULT_COMMAND "rg --files --hidden --follow -g \"!.git/\" 2> /dev/null"
