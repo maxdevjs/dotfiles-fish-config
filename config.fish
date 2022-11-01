@@ -106,7 +106,7 @@ if type -q nvim
   alias vimdiff="n -d"
   # FIX: $XDG_CONFIG_HOME # https://www.reddit.com/r/fishshell/comments/r1r3cn/comment/hm1jqsk/
   alias ncf="n $XDG_CONFIG_HOME/fish/config.fish"
-  #alias ncn="n $XDG_CONFIG_HOME/nvim/init.lua"
+  alias ncn="n $XDG_CONFIG_HOME/nvim/init.lua"
   #alias ncx="n $HOME/System/nixos-config/"
 end
 
@@ -123,7 +123,10 @@ set -gx XDG_CONFIG_HOME "$HOME/.config"
 # https://fishshell.com/docs/current/tutorial.html#path
 # https://fishshell.com/docs/current/tutorial.html#path-example
 # https://fishshell.com/docs/current/cmds/fish_add_path.html
-set -x PATH $HOME/.guix-profile/bin $HOME/.local/bin $PATH
+
+set DENO_INSTALL "/home/maxdevjs/.deno"
+
+set -x PATH $HOME/.guix-profile/bin $HOME/.local/bin $DENO_INSTALL/bin $PATH
 
 # https://github.com/jarun/nnn/tree/master/plugins#configuration
 #"NNN_FIFO=/tmp/nnn.fifo NNN_PLUG='p:preview-tui' nnn "
