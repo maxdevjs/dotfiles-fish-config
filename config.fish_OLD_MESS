@@ -7,12 +7,40 @@ end
 
 # universal variable are stored in $HOME/.config/fish/fish_variables
 
+
 function set_universal_nvm_default_version
 		#Ex.: set --universal nvm_default_version v18.9.0
     set --universal nvm_default_version $argv
     # Packages to install every change of version
     #Ex.: set --universal nvm_default_packages yarn np
 end
+
+# set pure_enable_git false
+
+# https://github.com/cirruslabs/docker-images-flutter/
+# abbr -a flutter-run 'docker run --rm -it -v {$PWD}:/build --workdir /build cirrusci/flutter:latest flutter run'
+
+# alias flutter-doctor='docker run --rm -it -v {$PWD}:/build --workdir /build cirrusci/flutter:latest flutter doctor'
+# alias flutter-emulators='docker run --rm -it -v {$PWD}:/build --workdir /build cirrusci/flutter:latest flutter emulators'
+# alias flutter-emulators-create='docker run --rm -it -v {$PWD}:/build --workdir /build cirrusci/flutter:latest flutter emulators --create
+# {$argv}'
+# alias flutter-test='docker run --rm -it -v {$PWD}:/build --workdir /build cirrusci/flutter:latest flutter test'
+
+# abbr -a flutter-bash 'docker run --rm -it -v ${PWD}:/build --workdir /build --entrypoint bash cirrusci/flutter:latest'
+
+# https://github.com/matsp/docker-flutter/issues/3
+# https://github.com/matsp/docker-flutter/issues/2
+# https://github.com/matsp/docker-flutter
+#abbr -a flutter-run 'docker run --rm -e UID=(id -u) -e GID=(id -g) --workdir /project -v "$PWD":/project matspfeiffer/flutter run'
+# alias flutter-create='docker run --rm -e UID=$(id -u) -e GID=$(id -g) --workdir /project -v "$PWD":/project matspfeiffer/flutter create
+# {$argv}'
+# alias flutter-doctor='docker run --rm -e UID=$(id -u) -e GID=$(id -g) --workdir /project -v "$PWD":/project matspfeiffer/flutter doctor'
+# alias flutter-emulator='xhost local:$USER && docker run --rm -ti -e UID=$(id -u) -e GID=$(id -g) -p 42000:42000 --workdir /project --device /dev/kvm --device /dev/dri:/dev/dri -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY -v "$PWD":/project --entrypoint flutter-android-emulator  matspfeiffer/flutter'
+# alias flutter-emulators=''
+# alias flutter-emulators-create=''
+# alias flutter-help='docker run --rm -e UID=$(id -u) -e GID=$(id -g) --workdir /project -v "$PWD":/project matspfeiffer/flutter help'
+# alias flutter-help='docker run --rm -e UID=$(id -u) -e GID=$(id -g) --workdir /project -v "$PWD":/project matspfeiffer/flutter help'
+# alias flutter-test='docker run --rm -e UID=$(id -u) -e GID=$(id -g) --workdir /project -v "$PWD":/project matspfeiffer/flutter test'
 
 abbr -a c clear
 abbr -a flutter-run 'docker run --rm -e UID=$(id -u) -e GID=$(id -g) --workdir /project -v "$PWD":/project --device /dev/bus/usb matspfeiffer/flutter:beta run'
@@ -40,11 +68,31 @@ set fish_cursor_visual      block
 
 # Reset padding/margin to 0 when opening nvim
 # TODO: search for fish hook to use in all applications
-# ANSWER: does not exist
 alias kmp0='kitty @ set-spacing padding=0 margin=0'
 # Reset padding/margin to config values when closing nvim
 # TODO: store/retrieve from...?
 alias kmpV='kitty @ set-spacing padding=20 margin=10'
+#vim.api.nvim_command([[ autocmd VimLeave * :silent !kitty @ set-spacing padding=20 margin=10 ]])
+
+# function preexec_test --on-event fish_preexec
+#   echo preexec handler: $argv
+#   if set -q CMD_DURATION
+#   sleep 2s;
+#     kitty @ set-spacing padding=0 margin=0
+#   end
+#   
+# end
+# 
+# function postexec_test --on-event fish_postexec
+#   echo postexec handler: $argv
+#   kitty @ set-spacing padding=20 margin=10
+# end
+
+# if test -q fish_prompt
+# 	kitty @ set-spacing padding=120 margin=110
+# else
+# kitty @ set-spacing padding=0 margin=0
+# end
 
 # bat
 if type -q bat
@@ -64,7 +112,7 @@ if type -q nvim
   alias vimdiff="n -d"
   # FIX: $XDG_CONFIG_HOME # https://www.reddit.com/r/fishshell/comments/r1r3cn/comment/hm1jqsk/
   alias ncf="n $XDG_CONFIG_HOME/fish/config.fish"
-  alias ncn="n $XDG_CONFIG_HOME/nvim/init.lua"
+  #alias ncn="n $XDG_CONFIG_HOME/nvim/init.lua"
   #alias ncx="n $HOME/System/nixos-config/"
 end
 
@@ -81,10 +129,7 @@ set -gx XDG_CONFIG_HOME "$HOME/.config"
 # https://fishshell.com/docs/current/tutorial.html#path
 # https://fishshell.com/docs/current/tutorial.html#path-example
 # https://fishshell.com/docs/current/cmds/fish_add_path.html
-
-set DENO_INSTALL "/home/maxdevjs/.deno"
-
-set -x PATH $HOME/.guix-profile/bin $HOME/.local/bin $DENO_INSTALL/bin $PATH
+set -x PATH $HOME/.guix-profile/bin $HOME/.local/bin $PATH
 
 # https://github.com/jarun/nnn/tree/master/plugins#configuration
 #"NNN_FIFO=/tmp/nnn.fifo NNN_PLUG='p:preview-tui' nnn "
