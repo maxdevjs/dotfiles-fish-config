@@ -11,8 +11,17 @@ function set_universal_nvm_default_version
 		#Ex.: set --universal nvm_default_version v18.9.0
     set --universal nvm_default_version $argv
     # Packages to install every change of version
-    #Ex.: set --universal nvm_default_packages yarn np
+    #Ex.: set --universal nvm_default_packages typescript yarn
 end
+
+# Question: Make nvm use usable for my own auto-switching? #186
+# https://github.com/jorgebucaran/nvm.fish/pull/186
+# Node is unavailable in new shells #196
+# https://github.com/jorgebucaran/nvm.fish/issues/196
+function __nvm_auto --on-variable PWD
+  nvm use --silent 2>/dev/null
+end
+__nvm_auto
 
 abbr -a c clear
 abbr -a flutter-run 'docker run --rm -e UID=$(id -u) -e GID=$(id -g) --workdir /project -v "$PWD":/project --device /dev/bus/usb matspfeiffer/flutter:beta run'
