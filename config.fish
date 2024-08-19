@@ -8,10 +8,10 @@ end
 # universal variable are stored in $HOME/.config/fish/fish_variables
 
 function set_universal_nvm_default_version
-		#Ex.: set --universal nvm_default_version v18.9.0
+    #Ex.: set --universal nvm_default_version v18.9.0
     set --universal nvm_default_version $argv
     # Packages to install every change of version
-    #Ex.: set --universal nvm_default_packages typescript yarn
+    #Ex.: set --universal nvm_default_packages neovim typescript yarn
 end
 
 # Question: Make nvm use usable for my own auto-switching? #186
@@ -19,9 +19,13 @@ end
 # Node is unavailable in new shells #196
 # https://github.com/jorgebucaran/nvm.fish/issues/196
 function __nvm_auto --on-variable PWD
-  nvm use --silent 2>/dev/null
+    nvm use --silent 2>/dev/null
 end
 __nvm_auto
+
+#if status is-interactive && ! set --query nvm_default_version
+#	nvm use --silent $nvm_default_version
+#end
 
 abbr -a c clear
 abbr -a flutter-run 'docker run --rm -e UID=$(id -u) -e GID=$(id -g) --workdir /project -v "$PWD":/project --device /dev/bus/usb matspfeiffer/flutter:beta run'
@@ -32,20 +36,20 @@ abbr -a yd 'youtube-dl ""'
 alias ks="$XDG_CONFIG_HOME/kitty/sessions/kitty-startup"
 
 if type -q n exa
-  #alias la="exa -la"
-  alias la="exa -l -g --icons"
-  alias lg="exa --git -l"
-  alias lt="exa --tree -D -L 3"
+    #alias la="exa -la"
+    alias la="exa -l -g --icons"
+    alias lg="exa --git -l"
+    alias lt="exa --tree -D -L 3"
 end
 
 # vi mode
 fish_vi_key_bindings
 
 # Set the cursor shapes for the different vi modes.
-set fish_cursor_default     block      blink
-set fish_cursor_insert      line       blink
+set fish_cursor_default block blink
+set fish_cursor_insert line blink
 set fish_cursor_replace_one underscore blink
-set fish_cursor_visual      block
+set fish_cursor_visual block
 
 # Reset padding/margin to 0 when opening nvim
 # TODO: search for fish hook to use in all applications
@@ -55,28 +59,43 @@ alias kmp0='kitty @ set-spacing padding=0 margin=0'
 # TODO: store/retrieve from...?
 alias kmpV='kitty @ set-spacing padding=20 margin=10'
 
+# [e]dit[i]n[n]vim
+# https://github.com/junegunn/fzf#turning-into-a-different-process
+# https://github.com/junegunn/fzf#preview-window
+#alias ein='fd -t f -p -a -H | fzf --bind "enter:become(n {})"'
+#alias fzfeinp='fd -t f -p -a -H | fzf --preview "bat {}" --header " 📝 Edit file in nvim" --bind "enter:become(n {})"'
+alias fzfein='fd -t f -p -a -H | fzf --height=60% --preview "bat --color=always {}" --preview-window "~3" --bind "enter:become(n {})" --header " 📝 Edit file in nvim"'
+
+# https://github.com/junegunn/fzf/blob/master/ADVANCED.md#introduction
+alias fzfkp='ps -ef | fzf-tmux -p 80%,80% --header "☠️ Kill a process" | awk "{print $2}" | xargs kill -9 '
+
 # bat
 if type -q bat
-  alias cat=bat
+    alias cat=bat
+end
+
+if type -q rga
+    alias rg=rga
 end
 
 # nvim 🦾
 if type -q nvim
-  set -gx EDITOR 'nvim -u NONE'
-  set -gx VISUAL nvim
-  set -gx MANPAGER "nvim +Man!"
-  
-  # Padding 0
-  alias n='kmp0 && nvim '
-  #alias n='nvim '
-  #alias nl='nvim -u ~/.config/nvim/init.lua '
-  alias vimdiff="n -d"
-  # FIX: $XDG_CONFIG_HOME # https://www.reddit.com/r/fishshell/comments/r1r3cn/comment/hm1jqsk/
-  alias ncf="n $XDG_CONFIG_HOME/fish/config.fish"
-  alias ncn="n $XDG_CONFIG_HOME/nvim/init.lua"
-  #alias ncx="n $HOME/System/nixos-config/"
+    set -gx EDITOR 'nvim -u NONE'
+    set -gx VISUAL nvim
+    set -gx MANPAGER "nvim +Man!"
+
+    # Padding 0
+    alias n='kmp0 && nvim '
+    #alias n='nvim '
+    #alias nl='nvim -u ~/.config/nvim/init.lua '
+    alias vimdiff="n -d"
+    # FIX: $XDG_CONFIG_HOME # https://www.reddit.com/r/fishshell/comments/r1r3cn/comment/hm1jqsk/
+    alias ecf="n $XDG_CONFIG_HOME/fish/config.fish"
+    alias ecn="n $XDG_CONFIG_HOME/nvim/init.lua"
+    #alias ncx="n $HOME/System/nixos-config/"
 end
 
+set -gx FZF_DEFAULT_OPTS "--height=60% --layout=reverse --info=inline --border --margin=1 --padding=1"
 set -gx FZF_DEFAULT_COMMAND "rg --files --hidden --follow -g \"!.git/\" 2> /dev/null"
 set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 
@@ -91,9 +110,13 @@ set -gx XDG_CONFIG_HOME "$HOME/.config"
 # https://fishshell.com/docs/current/tutorial.html#path-example
 # https://fishshell.com/docs/current/cmds/fish_add_path.html
 
-set DENO_INSTALL "/home/maxdevjs/.deno"
+#set DENO_INSTALL "/home/maxdevjs/.deno"
+#set -x PATH $HOME/.guix-profile/bin $HOME/.local/bin $DENO_INSTALL/bin $HOME/.cargo/bin $PATH
 
-set -x PATH $HOME/.guix-profile/bin $HOME/.local/bin $DENO_INSTALL/bin $PATH
+set GOPATH "$HOME/go"
+set GOBIN $GOPATH/bin
+set GOMODCACHE $GOPATH/pkg/mod
+set -x PATH $GOPATH $GOBIN $GOMODCACHE $PATH
 
 # https://github.com/jarun/nnn/tree/master/plugins#configuration
 #"NNN_FIFO=/tmp/nnn.fifo NNN_PLUG='p:preview-tui' nnn "
@@ -102,17 +125,17 @@ set -gx NNN_FIFO /tmp/nnn.fifo
 # https://github.com/jarun/nnn/tree/master/plugins#skip-user-confirmation-after-command-execution-
 # https://github.com/jarun/nnn/tree/master/plugins#page-non-interactive-command-output-
 set NNN_PLUG_COM 't:-!|tree -ps;l:-!|ls -lah --group-directories-first'
-set -gx NNN_COLORS '1234' '#0a1b2c3d''#0a1b2c3d;1234'
+set -gx NNN_COLORS 1234 '#0a1b2c3d''#0a1b2c3d;1234'
 set NNN_PLUG_DEV 'g:-!git diff*;l:-!git log*;o:!dev-git-open-repo-in-browser*'
 set NNN_PLUG_MEDIA 'm:-!|mediainfo $nnn;w:!&mpv $nnn*'
 set NNN_PLUG_NNN 'p:preview-tui;u:nmount'
 set -gx NNN_PLUG "$NNN_PLUG_DEV;$NNN_PLUG_MEDIA;$NNN_PLUG_NNN"
-alias nnn="nnn -i -o -U" 
+alias nnn="nnn -i -o -U"
 
 # https://github.com/Olical/dotfiles/blob/master/stowed/.config/fish/config.fish
 if type -q direnv
-#   eval (direnv hook fish)
-  direnv hook fish | source
+    #   eval (direnv hook fish)
+    direnv hook fish | source
 end
 
 # TODO: https://github.com/folke/tokyonight.nvim/blob/main/extras/fish_tokyonight_night.fish
@@ -145,9 +168,11 @@ end
 #source $GUIX_PROFILE/etc/profile
 
 # Nix
+# $HOME/.profile
 #set NIX_LINK $HOME/.nix-profile # 🤔
 # https://github.com/lilyball/nix-env.fish
 
 # error: experimental Nix feature 'nix-command' is disabled; use '--extra-experimental-features nix-command' to override
 alias nix='nix --extra-experimental-features nix-command --extra-experimental-features flakes '
 
+set -gx NIXPKGS_ALLOW_UNFREE 1
