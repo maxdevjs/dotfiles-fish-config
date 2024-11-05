@@ -69,6 +69,11 @@ alias fzfein='fd -t f -p -a -H | fzf --height=60% --preview "bat --color=always 
 # https://github.com/junegunn/fzf/blob/master/ADVANCED.md#introduction
 alias fzfkp='ps -ef | fzf-tmux -p 80%,80% --header "☠️ Kill a process" | awk "{print $2}" | xargs kill -9 '
 
+alias irssi='irssi --home=$XDG_CONFIG_HOME/irssi/ --config=$XDG_CONFIG_HOME/irssi/config'
+
+# https://www.inmotionhosting.com/support/server/linux/send-files-to-trash-with-gio-trash/
+alias trash='gio trash'
+
 # bat
 if type -q bat
     alias cat=bat
